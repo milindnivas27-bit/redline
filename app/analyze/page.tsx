@@ -10,6 +10,9 @@ import { SignalList } from '@/components/features/SignalList';
 import { ClaimList } from '@/components/features/ClaimList';
 import { Mode, AnalysisResult } from '@/lib/types';
 
+const API_BASE =
+  process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+
 export default function AnalyzePage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -27,19 +30,8 @@ export default function AnalyzePage() {
     setError('');
     setResult(null);
 
-    // Local dev → hit your laptop's Python server
-    // Production (Vercel) → hit /api/backend/analyze on the same domain
-    const isLocal =
-      typeof window !== 'undefined' &&
-      (window.location.hostname === 'localhost' ||
-        window.location.hostname === '127.0.0.1');
-
-    const API_URL = isLocal
-      ? 'http://localhost:8000/analyze'
-      : '/api/backend/analyze';
-
     try {
-      const res = await fetch(API_URL, {
+      const res = await fetch(`${API_BASE}/analyze`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ type: mode, content }),
@@ -56,7 +48,7 @@ export default function AnalyzePage() {
       const msg =
         e instanceof Error && e.message
           ? e.message
-          : "Couldn't reach the analyzer. Make sure the Python server is running on port 8000.";
+          : "Couldn't reach the analyzer. Try again in a moment.";
       setError(msg);
     } finally {
       setLoading(false);
@@ -71,7 +63,6 @@ export default function AnalyzePage() {
 
   return (
     <div className="max-w-4xl mx-auto px-6 py-16 sm:py-24">
-      {/* ── Header ──────────────────────────── */}
       <div className="mb-12">
         <Link
           href="/"
@@ -96,12 +87,10 @@ export default function AnalyzePage() {
         </p>
       </div>
 
-      {/* ── Input ───────────────────────────── */}
       <AnalyzerInput onSubmit={handleSubmit} loading={loading} />
 
       <div ref={topRef} />
 
-      {/* ── Loading ─────────────────────────── */}
       {loading && (
         <div className="mt-16 flex items-center gap-3 text-[var(--text-muted-light)]">
           <Loader2 className="w-4 h-4 animate-spin text-[var(--accent)]" strokeWidth={2} />
@@ -111,7 +100,6 @@ export default function AnalyzePage() {
         </div>
       )}
 
-      {/* ── Error ───────────────────────────── */}
       {error && !loading && (
         <div className="mt-16 border border-[var(--accent)]/30 bg-[var(--accent-soft)] rounded-[var(--radius)] p-5 flex items-start gap-3">
           <AlertTriangle className="w-4 h-4 text-[var(--accent)] mt-0.5 shrink-0" strokeWidth={2} />
@@ -122,14 +110,10 @@ export default function AnalyzePage() {
             <p className="mt-1 text-sm text-[var(--text-muted-light)] leading-relaxed">
               {error}
             </p>
-            <p className="mt-2 font-mono text-[10px] uppercase tracking-[0.18em] text-[var(--text-subtle-light)]">
-              Backend: localhost:8000
-            </p>
           </div>
         </div>
       )}
 
-      {/* ── Result ──────────────────────────── */}
       {result && !loading && (
         <>
           <ResultHeader result={result} />
