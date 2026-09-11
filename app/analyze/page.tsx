@@ -16,7 +16,6 @@ export default function AnalyzePage() {
   const [result, setResult] = useState<AnalysisResult | null>(null);
   const topRef = useRef<HTMLDivElement>(null);
 
-  // Scroll to top of result when it arrives
   useEffect(() => {
     if (result || error) {
       topRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -28,8 +27,19 @@ export default function AnalyzePage() {
     setError('');
     setResult(null);
 
+    // Local dev → hit your laptop's Python server
+    // Production (Vercel) → hit /api/backend/analyze on the same domain
+    const isLocal =
+      typeof window !== 'undefined' &&
+      (window.location.hostname === 'localhost' ||
+        window.location.hostname === '127.0.0.1');
+
+    const API_URL = isLocal
+      ? 'http://localhost:8000/analyze'
+      : '/api/backend/analyze';
+
     try {
-      const res = await fetch('http://localhost:8000/analyze', {
+      const res = await fetch(API_URL, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ type: mode, content }),
@@ -127,7 +137,6 @@ export default function AnalyzePage() {
           <SignalList result={result} />
           <ClaimList result={result} />
 
-          {/* Footer action */}
           <div className="mt-20 pt-10 border-t border-[var(--border-light)] flex flex-wrap items-center justify-between gap-4">
             <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-[var(--text-subtle-light)]">
               // ANALYSIS COMPLETE
