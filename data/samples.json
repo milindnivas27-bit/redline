@@ -1,0 +1,19 @@
+{
+  "urlSamples": [
+    {
+      "label": "Wikipedia — Climate",
+      "url": "https://en.wikipedia.org/wiki/Climate_change"
+    },
+    {
+      "label": "Wikipedia — Misinformation",
+      "url": "https://en.wikipedia.org/wiki/Misinformation"
+    },
+    {
+      "label": "BBC — Article",
+      "url": "https://www.bbc.com/news/science-environment-68592102"
+    }
+  ],
+  "textSample": "BREAKING!!! You won't BELIEVE what scientists just discovered about your drinking water. SHOCKING new study proves that tap water is DESTROYING your brain. The government has been hiding this for YEARS. Experts say millions are at risk RIGHT NOW. Share this before it gets taken down!!!",
+  "urlPlaceholder": "https://example.com/article",
+  "textPlaceholder": "Paste an article, WhatsApp forward, or claim…"
+}

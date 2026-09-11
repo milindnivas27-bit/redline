@@ -1,36 +1,36 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Redline — See what's suspicious before you share
 
-## Getting Started
+A credibility analyst. Paste a news article or a claim. See what's suspicious, what's vague, and what to verify — before you share it.
 
-First, run the development server:
+## The problem
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+"Fake" is not a verdict, it's a spectrum. Most misinformation isn't fabricated — it's misleading framing, missing context, or a real quote attributed to the wrong person. A binary fake/real classifier can't see that, and AI detectors hallucinate confidence on unfamiliar articles.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+And even when they work, "78% fake" is useless. Nobody knows what to do with a number.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## The approach
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Redline surfaces **evidence, not a verdict**. For any article or claim, it tells you:
 
-## Learn More
+- **Sensationalism score** — all-caps density, exclamation load, panic-trigger words
+- **Sourcing score** — vague authorities ("experts say") vs named sources
+- **Absolutism score** — overclaiming vs careful hedging
+- **Claim breakdown** — every sentence classified as verifiable / vague / unfalsifiable
+- **Verification prompts** — for every verifiable claim, a one-click Google search string
 
-To learn more about Next.js, take a look at the following resources:
+No black box. Every score is rule-based and defensible.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Stack
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- **Frontend:** Next.js 15 + TypeScript + Tailwind CSS
+- **Animation:** GSAP (scroll reveals) + Framer Motion
+- **Icons:** Lucide React
+- **Backend:** Python + FastAPI
+- **Scraping:** requests + BeautifulSoup4
+- **No external AI APIs. No ML models. 100% rule-based.**
 
-## Deploy on Vercel
+## Running locally
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+You need **two terminals** — one for Next.js, one for Python.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### Terminal 1 — Frontend
